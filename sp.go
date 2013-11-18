@@ -93,12 +93,12 @@ func (r *Spotify) SearchAlbums(q string) (SearchAlbumsResponse, error) {
 	e := "/search/1/album.json"
 	resp, err := r.getRequest(p, e)
 	if err != nil {
-		return SearchAlbumsResponse{}, nil
+		return SearchAlbumsResponse{}, err
 	}
 	var s SearchAlbumsResponse
 	err = json.Unmarshal(resp, &s)
 	if err != nil {
-		return SearchAlbumsResponse{}, nil
+		return SearchAlbumsResponse{}, err
 	}
 	return s, nil
 }
