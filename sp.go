@@ -58,16 +58,29 @@ type Album struct {
 	}
 }
 
+type Info struct {
+	NumResults int
+	Limit      int
+	Offset     int
+	Query      string
+	Type       string
+	Page       int
+}
+
 type SearchAlbumsResponse struct {
-	Info struct {
-		NumResults int
-		Limit      int
-		Offset     int
-		Query      string
-		Type       string
-		Page       int
-	}
+	Info   Info
 	Albums []Album
+}
+
+type Artist struct {
+	Href       string
+	Name       string
+	Popularity FloatString
+}
+
+type SearchArtistsResponse struct {
+	Info    Info
+	Artists []Artist
 }
 
 func (r *Spotify) getRequest(params map[string]string, endpoint string) ([]byte, error) {
@@ -99,6 +112,21 @@ func (r *Spotify) SearchAlbums(q string) (SearchAlbumsResponse, error) {
 	err = json.Unmarshal(resp, &s)
 	if err != nil {
 		return SearchAlbumsResponse{}, err
+	}
+	return s, nil
+}
+
+func (r *Spotify) SearchArtists(q string) (SearchArtistsResponse, error) {
+	p := map[string]string{"q": q}
+	e := "/search/1/artist.json"
+	resp, err := r.getRequest(p, e)
+	if err != nil {
+		return SearchArtistsResponse{}, err
+	}
+	var s SearchArtistsResponse
+	err = json.Unmarshal(resp, &s)
+	if err != nil {
+		return SearchArtistsResponse{}, err
 	}
 	return s, nil
 }
