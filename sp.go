@@ -41,25 +41,32 @@ func (f *IntString) UnmarshalJSON(i interface{}) int64 {
 	return n
 }
 
+type ExternalId struct {
+	Type string
+	Id   IntString
+}
+
+type Artist struct {
+	Href       string
+	Name       string
+	Popularity FloatString `json:"omitempty"`
+}
+
 type Album struct {
-	Name        string
-	Popularity  FloatString
-	ExternalIds []struct {
-		Type string
-		Id   IntString
-	} `json:"external-ids"`
-	Href    string
-	Artists []struct {
-		Href string
-		Name string
-	}
+	Name         string
+	Released     string       `json:"omitempty"`
+	Popularity   FloatString  `json:"omitempty"`
+	ExternalIds  []ExternalId `json:"external-ids"`
+	Length       float64      `json:"omitempty"`
+	Href         string
+	Artists      []Artist `json:"omitempty"`
 	Availability struct {
 		Territories string
 	}
 }
 
 type Info struct {
-	NumResults int
+	NumResults int `json:"num_results"`
 	Limit      int
 	Offset     int
 	Query      string
@@ -72,15 +79,26 @@ type SearchAlbumsResponse struct {
 	Albums []Album
 }
 
-type Artist struct {
-	Href       string
-	Name       string
-	Popularity FloatString
-}
-
 type SearchArtistsResponse struct {
 	Info    Info
 	Artists []Artist
+}
+
+type Track struct {
+	Album       Album
+	Name        string
+	ExternalIds []ExternalId `json:"external-ids"`
+	Popularity  FloatString
+	Explicit    bool
+	Length      float64
+	Href        string
+	Artists     []Artist
+	TrackNumber IntString `json:"track-number"`
+}
+
+type SearchTracksResponse struct {
+	Info   Info
+	Tracks []Track
 }
 
 func (r *Spotify) getRequest(params map[string]string, endpoint string) ([]byte, error) {
@@ -127,6 +145,21 @@ func (r *Spotify) SearchArtists(q string) (SearchArtistsResponse, error) {
 	err = json.Unmarshal(resp, &s)
 	if err != nil {
 		return SearchArtistsResponse{}, err
+	}
+	return s, nil
+}
+
+func (r *Spotify) SearchTracks(q string) (SearchTracksResponse, error) {
+	p := map[string]string{"q": q}
+	e := "/search/1/track.json"
+	resp, err := r.getRequest(p, e)
+	if err != nil {
+		return SearchTracksResponse{}, err
+	}
+	var s SearchTracksResponse
+	err = json.Unmarshal(resp, &s)
+	if err != nil {
+		return SearchTracksResponse{}, err
 	}
 	return s, nil
 }
