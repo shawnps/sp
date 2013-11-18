@@ -76,7 +76,6 @@ func (r *Spotify) getRequest(params map[string]string, endpoint string) ([]byte,
 		v.Set(key, val)
 	}
 	u := apiURL + endpoint + "?" + v.Encode()
-	println(u)
 	resp, err := http.Get(u)
 	if err != nil {
 		return nil, err
