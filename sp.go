@@ -49,15 +49,15 @@ type ExternalId struct {
 type Artist struct {
 	Href       string
 	Name       string
-	Popularity FloatString `json:"omitempty"`
+	Popularity FloatString `json:"popularity,omitempty"`
 }
 
 type Album struct {
 	Name         string
-	Released     string       `json:"omitempty"`
-	Popularity   FloatString  `json:"omitempty"`
+	Released     string       `json:"released,omitempty"`
+	Popularity   FloatString  `json:"popularity,omitempty"`
 	ExternalIds  []ExternalId `json:"external-ids"`
-	Length       float64      `json:"omitempty"`
+	Length       float64      `json:"length,omitempty"`
 	Href         string
 	Artists      []Artist `json:"artists,omitempty"`
 	Availability struct {
