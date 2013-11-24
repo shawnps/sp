@@ -59,7 +59,7 @@ type Album struct {
 	ExternalIds  []ExternalId `json:"external-ids"`
 	Length       float64      `json:"omitempty"`
 	Href         string
-	Artists      []Artist `json:"omitempty"`
+	Artists      []Artist `json:"artists,omitempty"`
 	Availability struct {
 		Territories string
 	}
