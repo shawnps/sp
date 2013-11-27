@@ -101,6 +101,13 @@ type SearchTracksResponse struct {
 	Tracks []Track
 }
 
+type LookupArtistResponse struct {
+	Info struct {
+		Type string
+	}
+	Artist Artist
+}
+
 func (r *Spotify) getRequest(params map[string]string, endpoint string) ([]byte, error) {
 	v := url.Values{}
 	for key, val := range params {
@@ -153,13 +160,28 @@ func (r *Spotify) SearchTracks(q string) (SearchTracksResponse, error) {
 	p := map[string]string{"q": q}
 	e := "/search/1/track.json"
 	resp, err := r.getRequest(p, e)
-	if err != nil {
-		return SearchTracksResponse{}, err
-	}
 	var s SearchTracksResponse
+	if err != nil {
+		return s, err
+	}
 	err = json.Unmarshal(resp, &s)
 	if err != nil {
-		return SearchTracksResponse{}, err
+		return s, err
 	}
 	return s, nil
+}
+
+func (r *Spotify) LookupArtist(uri string) (LookupArtistResponse, error) {
+	p := map[string]string{"uri": uri}
+	e := "/lookup/1/.json"
+	resp, err := r.getRequest(p, e)
+	var l LookupArtistResponse
+	if err != nil {
+		return l, err
+	}
+	err = json.Unmarshal(resp, &l)
+	if err != nil {
+		return l, err
+	}
+	return l, nil
 }
