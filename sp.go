@@ -130,13 +130,13 @@ func (r *Spotify) SearchAlbums(q string) (SearchAlbumsResponse, error) {
 	p := map[string]string{"q": q}
 	e := "/search/1/album.json"
 	resp, err := r.getRequest(p, e)
-	if err != nil {
-		return SearchAlbumsResponse{}, err
-	}
 	var s SearchAlbumsResponse
+	if err != nil {
+		return s, err
+	}
 	err = json.Unmarshal(resp, &s)
 	if err != nil {
-		return SearchAlbumsResponse{}, err
+		return s, err
 	}
 	return s, nil
 }
@@ -145,13 +145,13 @@ func (r *Spotify) SearchArtists(q string) (SearchArtistsResponse, error) {
 	p := map[string]string{"q": q}
 	e := "/search/1/artist.json"
 	resp, err := r.getRequest(p, e)
-	if err != nil {
-		return SearchArtistsResponse{}, err
-	}
 	var s SearchArtistsResponse
+	if err != nil {
+		return s, err
+	}
 	err = json.Unmarshal(resp, &s)
 	if err != nil {
-		return SearchArtistsResponse{}, err
+		return s, err
 	}
 	return s, nil
 }
