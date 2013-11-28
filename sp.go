@@ -85,15 +85,18 @@ type SearchArtistsResponse struct {
 }
 
 type Track struct {
-	Album       Album
-	Name        string
-	ExternalIds []ExternalId `json:"external-ids"`
-	Popularity  FloatString
-	Explicit    bool
-	Length      float64
-	Href        string
-	Artists     []Artist
-	TrackNumber IntString `json:"track-number"`
+	Album        Album
+	Name         string
+	ExternalIds  []ExternalId `json:"external-ids"`
+	Popularity   FloatString
+	Explicit     bool `json:"explicit,omitempty"`
+	Length       float64
+	Href         string
+	Artists      []Artist
+	TrackNumber  IntString `json:"track-number"`
+	Availability struct {
+		Territories string
+	} `json:"availability,omitempty"`
 }
 
 type SearchTracksResponse struct {
@@ -106,6 +109,13 @@ type LookupArtistResponse struct {
 		Type string
 	}
 	Artist Artist
+}
+
+type LookupTrackResponse struct {
+	Info struct {
+		Type string
+	}
+	Track Track
 }
 
 func (r *Spotify) getRequest(params map[string]string, endpoint string) ([]byte, error) {
@@ -176,6 +186,36 @@ func (r *Spotify) LookupArtist(uri string) (LookupArtistResponse, error) {
 	e := "/lookup/1/.json"
 	resp, err := r.getRequest(p, e)
 	var l LookupArtistResponse
+	if err != nil {
+		return l, err
+	}
+	err = json.Unmarshal(resp, &l)
+	if err != nil {
+		return l, err
+	}
+	return l, nil
+}
+
+func (r *Spotify) LookupAlbum(uri string) (LookupArtistResponse, error) {
+	p := map[string]string{"uri": uri}
+	e := "/lookup/1/.json"
+	resp, err := r.getRequest(p, e)
+	var l LookupArtistResponse
+	if err != nil {
+		return l, err
+	}
+	err = json.Unmarshal(resp, &l)
+	if err != nil {
+		return l, err
+	}
+	return l, nil
+}
+
+func (r *Spotify) LookupTrack(uri string) (LookupTrackResponse, error) {
+	p := map[string]string{"uri": uri}
+	e := "/lookup/1/.json"
+	resp, err := r.getRequest(p, e)
+	var l LookupTrackResponse
 	if err != nil {
 		return l, err
 	}
