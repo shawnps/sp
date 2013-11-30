@@ -118,6 +118,31 @@ type LookupTrackResponse struct {
 	Track Track
 }
 
+type LookupAlbumResponse struct {
+	Info struct {
+		Type string
+	}
+	Album struct {
+		ArtistId    string `json:"artist-id"`
+		Name        string
+		Artist      string
+		ExternalIds []struct {
+			Type string
+			Id   string
+		} `json:"external-ids"`
+		Released string
+		Tracks   []struct {
+			Available bool
+			Href      string
+			Artists   []struct {
+				Href string
+				Name string
+			}
+			Name string
+		}
+	}
+}
+
 func (r *Spotify) getRequest(params map[string]string, endpoint string) ([]byte, error) {
 	v := url.Values{}
 	for key, val := range params {
@@ -196,11 +221,11 @@ func (r *Spotify) LookupArtist(uri string) (LookupArtistResponse, error) {
 	return l, nil
 }
 
-func (r *Spotify) LookupAlbum(uri string) (LookupArtistResponse, error) {
+func (r *Spotify) LookupAlbum(uri string) (LookupAlbumResponse, error) {
 	p := map[string]string{"uri": uri}
 	e := "/lookup/1/.json"
 	resp, err := r.getRequest(p, e)
-	var l LookupArtistResponse
+	var l LookupAlbumResponse
 	if err != nil {
 		return l, err
 	}
