@@ -13,7 +13,9 @@ const (
 	apiURL = "http://ws.spotify.com"
 )
 
-type Spotify struct{}
+type Spotify struct {
+	Client http.Client
+}
 
 // The API returns strings for some things that one would expect
 // to be numbers (for example, popularity))
@@ -149,7 +151,7 @@ func (r *Spotify) getRequest(params map[string]string, endpoint string) ([]byte,
 		v.Set(key, val)
 	}
 	u := apiURL + endpoint + "?" + v.Encode()
-	resp, err := http.Get(u)
+	resp, err := r.Client.Get(u)
 	if err != nil {
 		return nil, err
 	}
