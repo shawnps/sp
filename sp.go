@@ -43,9 +43,9 @@ func (f *IntString) UnmarshalJSON(i interface{}) int64 {
 	return n
 }
 
-type ExternalId struct {
+type ExternalID struct {
 	Type string
-	Id   IntString
+	ID   IntString
 }
 
 type Artist struct {
@@ -58,7 +58,7 @@ type Album struct {
 	Name         string
 	Released     string       `json:"released,omitempty"`
 	Popularity   FloatString  `json:"popularity,omitempty"`
-	ExternalIds  []ExternalId `json:"external-ids"`
+	ExternalIDs  []ExternalID `json:"external-ids"`
 	Length       float64      `json:"length,omitempty"`
 	Href         string
 	Artists      []Artist `json:"artists,omitempty"`
@@ -89,7 +89,7 @@ type SearchArtistsResponse struct {
 type Track struct {
 	Album        Album
 	Name         string
-	ExternalIds  []ExternalId `json:"external-ids"`
+	ExternalIDs  []ExternalID `json:"external-ids"`
 	Popularity   FloatString
 	Explicit     bool `json:"explicit,omitempty"`
 	Length       float64
@@ -125,12 +125,12 @@ type LookupAlbumResponse struct {
 		Type string
 	}
 	Album struct {
-		ArtistId    string `json:"artist-id"`
+		ArtistID    string `json:"artist-id"`
 		Name        string
 		Artist      string
-		ExternalIds []struct {
+		ExternalIDs []struct {
 			Type string
-			Id   string
+			ID   string
 		} `json:"external-ids"`
 		Released string
 		Tracks   []struct {
