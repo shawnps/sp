@@ -17,9 +17,9 @@ type Spotify struct {
 	Client http.Client
 }
 
+// FloatString takes a string and converts it to a float64.
 // The API returns strings for some things that one would expect
 // to be numbers (for example, popularity))
-// FloatString takes a string and converts it to a float64.
 type FloatString string
 
 func (f *FloatString) UnmarshalJSON(i interface{}) float64 {
@@ -31,7 +31,7 @@ func (f *FloatString) UnmarshalJSON(i interface{}) float64 {
 	return n
 }
 
-// Same as FloatString, but for integers.
+// IntString is the same as FloatString, but for integers.
 type IntString string
 
 func (f *IntString) UnmarshalJSON(i interface{}) int64 {
