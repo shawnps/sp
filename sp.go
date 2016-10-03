@@ -14,7 +14,7 @@ const (
 )
 
 type Spotify struct {
-	Client http.Client
+	Client *http.Client
 }
 
 // FloatString takes a string and converts it to a float64.
@@ -43,6 +43,12 @@ func (f *IntString) UnmarshalJSON(i interface{}) int64 {
 	return n
 }
 
+type Image struct {
+	Height int
+	URL    string
+	Width  int
+}
+
 type ExternalID struct {
 	Type string
 	ID   IntString
@@ -56,15 +62,16 @@ type Artist struct {
 
 type Album struct {
 	Name         string
-	Released     string       `json:"released,omitempty"`
-	Popularity   FloatString  `json:"popularity,omitempty"`
-	ExternalIDs  []ExternalID `json:"external-ids"`
-	Length       float64      `json:"length,omitempty"`
+	Released     string        `json:"released,omitempty"`
+	Popularity   FloatString   `json:"popularity,omitempty"`
+	ExternalURLs []ExternalURL `json:"external_urls"`
+	Length       float64       `json:"length,omitempty"`
 	Href         string
 	Artists      []Artist `json:"artists,omitempty"`
 	Availability struct {
 		Territories string
 	}
+	Images []Image
 }
 
 type Info struct {
