@@ -62,10 +62,10 @@ type Artist struct {
 
 type Album struct {
 	Name         string
-	Released     string        `json:"released,omitempty"`
-	Popularity   FloatString   `json:"popularity,omitempty"`
-	ExternalURLs []ExternalURL `json:"external_urls"`
-	Length       float64       `json:"length,omitempty"`
+	Released     string       `json:"released,omitempty"`
+	Popularity   FloatString  `json:"popularity,omitempty"`
+	ExternalIDs  []ExternalID `json:"external-ids"`
+	Length       float64      `json:"length,omitempty"`
 	Href         string
 	Artists      []Artist `json:"artists,omitempty"`
 	Availability struct {
