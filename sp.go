@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	apiURL = "http://ws.spotify.com"
+	apiURL = "https://api.spotify.com"
 )
 
 type Spotify struct {
@@ -78,7 +78,9 @@ type Info struct {
 
 type SearchAlbumsResponse struct {
 	Info   Info
-	Albums []Album
+	Albums struct {
+		Items []Album
+	}
 }
 
 type SearchArtistsResponse struct {
@@ -164,8 +166,8 @@ func (r *Spotify) getRequest(params map[string]string, endpoint string) ([]byte,
 }
 
 func (r *Spotify) SearchAlbums(q string) (SearchAlbumsResponse, error) {
-	p := map[string]string{"q": q}
-	e := "/search/1/album.json"
+	p := map[string]string{"q": q, "type": "album"}
+	e := "/v1/search"
 	resp, err := r.getRequest(p, e)
 	var s SearchAlbumsResponse
 	if err != nil {
